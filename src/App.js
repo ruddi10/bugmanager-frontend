@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import jwtDecode from "jwt-decode";
+import { Route, Switch } from "react-router-dom";
+import LoginButton from "./components/loginButton";
+import Landing from "./components/landing";
+import Home from "./components/home";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    user: "",
+    errors: "",
+  };
+  handleLoginError = (errors) => {
+    this.setState({ errors });
+  };
+  handleLoginSuccess = () => {
+    try {
+      const token = localStorage.getItem("access");
+      const detoken = jwtDecode(token);
+      this.setState({ user: detoken.user_id });
+    } catch (ex) {}
+  };
+  render() {
+    return (
+      <Switch>
+        <Route path="/home" component={Home} />
+        <Route
+          path="/landing"
+          render={(props) => (
+            <Landing
+              {...props}
+              onError={this.handleLoginError}
+              onSuccess={this.handleLoginSuccess}
+            />
+          )}
+        />
+        <Route path="/" component={LoginButton} />
+      </Switch>
+    );
+  }
 }
 
 export default App;
