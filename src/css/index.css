@@ -2,6 +2,7 @@ html,
 body {
   box-sizing: border-box;
   min-height: 100vh;
+  font-size: 15px !important;
 }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

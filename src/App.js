@@ -1,42 +1,68 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import "./App.css";
-import jwtDecode from "jwt-decode";
-import { Route, Switch } from "react-router-dom";
+
+import { Route, Switch, Redirect } from "react-router-dom";
 import LoginButton from "./components/loginButton";
 import Landing from "./components/landing";
 import Home from "./components/home";
+import { getCurrentUser } from "./utils/helperFunctions";
+import NavBar from "./components/navbar";
+import ProjectList from "./components/projects";
+import MemberList from "./components/members";
 
 class App extends Component {
   state = {
-    user: "",
+    user: {},
     errors: "",
   };
   handleLoginError = (errors) => {
     this.setState({ errors });
   };
-  handleLoginSuccess = () => {
-    try {
-      const token = localStorage.getItem("access");
-      const detoken = jwtDecode(token);
-      this.setState({ user: detoken.user_id });
-    } catch (ex) {}
+  handleSetUser = (user) => {
+    this.setState({ user });
   };
   render() {
     return (
-      <Switch>
-        <Route path="/home" component={Home} />
-        <Route
-          path="/landing"
-          render={(props) => (
-            <Landing
-              {...props}
-              onError={this.handleLoginError}
-              onSuccess={this.handleLoginSuccess}
-            />
-          )}
-        />
-        <Route path="/" component={LoginButton} />
-      </Switch>
+      <Fragment>
+        <NavBar />
+        <Switch>
+          <Route
+            path="/home"
+            render={(props) => (
+              <Home
+                {...props}
+                onGetUserData={this.handleSetUser}
+                user={this.state.user}
+              />
+            )}
+          />
+          <Route
+            path="/projects"
+            render={(props) => (
+              <ProjectList {...props} user={this.state.user} />
+            )}
+          />
+          <Route
+            path="/members"
+            render={(props) => <MemberList {...props} user={this.state.user} />}
+          />
+          <Route
+            path="/landing"
+            render={(props) => (
+              <Landing {...props} onError={this.handleLoginError} />
+            )}
+          />
+          <Route
+            path="/"
+            render={(props) => {
+              if (getCurrentUser()) {
+                return <Redirect to="/home" />;
+              }
+              return <LoginButton {...props} errors={this.state.errors} />;
+            }}
+          />
+        </Switch>
+      </Fragment>
     );
   }
 }

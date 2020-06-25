@@ -1,0 +1,24 @@
+.navi {
+  background-color: #3d3d3e !important;
+  padding: 1rem;
+  padding-bottom: 0;
+}
+
+.links {
+  color: white !important;
+  font-size: 15px;
+  margin-bottom: 0.5rem;
+}
+
+.logo {
+  font-weight: bolder;
+  color: white !important;
+  font-size: 18px;
+  margin-right: 0.7rem;
+  margin-bottom: 0.5rem;
+}
+
+.links.active {
+  background-color: #fc9945 !important;
+  font-weight: bolder !important;
+}

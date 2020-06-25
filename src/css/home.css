@@ -1,0 +1,49 @@
+.ui.grid.gridProfile {
+  max-width: 1400px;
+  margin: auto;
+  margin-top: 8rem;
+}
+
+.ui.menu .item.psideitem {
+  line-height: 1.5;
+  font-size: 1rem;
+}
+
+.ui.menu.vertical .item.psideitem.active {
+  color: white;
+  background-color: #fc9945;
+  font-weight: bold;
+}
+.ui.vertical.pointing.menu .active.item.psideitem:after {
+  background-color: #fc9945;
+}
+.ui.vertical.pointing.menu .active.item.psideitem:hover {
+  background-color: #fc9945;
+  color: white;
+  opacity: 0.9;
+  font-size: 1.03rem;
+  transition: ease-in;
+}
+.ui.vertical.pointing.menu .active.item.psideitem:hover:after {
+  background-color: #fc9945;
+  opacity: 0.9;
+}
+
+.ui.admin.header {
+  margin-bottom: 2rem;
+  margin-top: 0.7rem;
+}
+.homeissue {
+  min-width: 80%;
+}
+
+.homeissue .ui.secondary.pointing.menu {
+  display: flex;
+  justify-content: center;
+  border-bottom: 0;
+}
+
+.content.issuecontainer {
+  padding: 0.8rem;
+  border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+}
