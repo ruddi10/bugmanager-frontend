@@ -9,6 +9,7 @@ import { Grid } from "semantic-ui-react";
 import ProjectList from "./projects";
 import IssueList from "./issueList";
 import { getCurrentUser } from "../utils/helperFunctions";
+import MyProjects from "./myprojects";
 class Home extends Component {
   state = {
     loading: true,
@@ -43,7 +44,12 @@ class Home extends Component {
           </Grid.Column>
           <Grid.Column width={10}>
             <Switch>
-              <Route path="/home/myprojects" component={ProjectList} />
+              <Route
+                path="/home/myprojects"
+                render={(props) => (
+                  <MyProjects {...props} user={this.props.user} />
+                )}
+              />
               <Route
                 path="/home/rissues"
                 render={(props) => (

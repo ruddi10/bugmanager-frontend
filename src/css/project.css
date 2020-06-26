@@ -1,0 +1,13 @@
+@media only screen and (min-width: 1400px) {
+  .ui.container.projectcontainer {
+    width: 1350px;
+  }
+}
+.ui.container.projectcontainer {
+  margin-top: 8rem;
+}
+
+.ui.four.cards.projectgroup > .card {
+  width: 290px;
+  height: max-content;
+}

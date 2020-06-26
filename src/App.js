@@ -7,7 +7,7 @@ import Landing from "./components/landing";
 import Home from "./components/home";
 import { getCurrentUser } from "./utils/helperFunctions";
 import NavBar from "./components/navbar";
-import ProjectList from "./components/projects";
+import ProjectPage from "./components/projects";
 import MemberList from "./components/members";
 
 class App extends Component {
@@ -39,7 +39,7 @@ class App extends Component {
           <Route
             path="/projects"
             render={(props) => (
-              <ProjectList {...props} user={this.state.user} />
+              <ProjectPage {...props} user={this.state.user} />
             )}
           />
           <Route
