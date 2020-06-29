@@ -42,7 +42,7 @@ class Home extends Component {
           <Grid.Column width={4}>
             <ProfileSideNav />
           </Grid.Column>
-          <Grid.Column width={10}>
+          <Grid.Column width={12}>
             <Switch>
               <Route
                 path="/home/myprojects"

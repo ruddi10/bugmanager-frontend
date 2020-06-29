@@ -1,0 +1,10 @@
+.ui.menu.pagination.mypaginator {
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+}
+
+.ui.menu.pagination.mypaginator .active.item {
+  background-color: #fc9945;
+  color: white;
+  font-weight: bold;
+}

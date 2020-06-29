@@ -5,8 +5,11 @@ class ProjectList extends Component {
   state = {};
 
   render() {
+    if (!this.props.projects.count) {
+      return <h1>No Projects</h1>;
+    }
     const projects = this.props.projects.results.map((project) => (
-      <ProjectCard project={project} />
+      <ProjectCard key={project.id} project={project} />
     ));
     return (
       <Card.Group className="projectgroup" itemsPerRow={4}>

@@ -3,11 +3,24 @@
     width: 1350px;
   }
 }
-.ui.container.projectcontainer {
+.ui.container.projectcontainer.top {
   margin-top: 8rem;
 }
 
 .ui.four.cards.projectgroup > .card {
   width: 290px;
   height: max-content;
+}
+.ui.four.cards.projectgroup {
+  margin-top: 3rem;
+}
+
+.subscript {
+  color: gray;
+  margin-left: 2rem;
+  font-weight: bold;
+  margin-top: 0.3rem;
+}
+.ui.inline.dropdown {
+  color: #3d3d3e !important;
 }
