@@ -8,13 +8,16 @@ import {
   Icon,
   GridColumn,
   Header,
+  Transition,
+  Image,
 } from "semantic-ui-react";
 import ProjectList from "./projectlist";
 import Sorter from "./sort";
 import Paginator from "./pagination";
 import { getTotalPages } from "../../utils/helperFunctions";
+import Filter from "./filter";
+import FilterForm from "./filterform";
 class ProjectSkeleton extends Component {
-  state = {};
   sortOptions = [
     {
       key: "Date Created",
@@ -35,9 +38,7 @@ class ProjectSkeleton extends Component {
           <Grid.Row columns={2}>
             <Grid.Column style={{ display: "flex" }}>
               {" "}
-              <Header as="h1" st>
-                {this.props.heading}
-              </Header>
+              <Header as="h1">{this.props.heading}</Header>
               <span className="subscript">
                 {this.props.projects.count} Total
               </span>
@@ -55,18 +56,31 @@ class ProjectSkeleton extends Component {
                 justifyContent: "center",
               }}
             >
-              <Button size="small" icon labelPosition="right">
-                Filter
-                <Icon name="filter" />
-              </Button>
+              <Filter
+                handleClick={this.props.toggleVisibility}
+                visible={this.props.visible}
+              />
               <Button size="small" color="orange">
                 <Icon name="add" />
                 Add Project
               </Button>
             </Grid.Column>
           </Grid.Row>
+          <Transition
+            visible={this.props.visible}
+            animation="scale"
+            duration={500}
+          >
+            <Grid.Row>
+              <FilterForm />
+            </Grid.Row>
+          </Transition>
+
           <Grid.Row>
-            <ProjectList projects={this.props.projects} />
+            <ProjectList
+              sections={this.props.sections}
+              projects={this.props.projects}
+            />
           </Grid.Row>
         </Grid>
         {getTotalPages(12, this.props.projects.count) && (

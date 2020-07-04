@@ -47,3 +47,12 @@
   padding: 0.8rem;
   border-bottom: 1px solid rgba(34, 36, 38, 0.15);
 }
+
+@media only screen and (min-width: 1400px) {
+  .ui.container.mycustomcontainer {
+    min-width: 1250px;
+  }
+}
+.ui.container.mycustomcontainer {
+  margin-top: 7rem;
+}

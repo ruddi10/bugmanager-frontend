@@ -40,7 +40,7 @@ class Home extends Component {
       <Grid className="gridProfile" columns={2}>
         <Grid.Row>
           <Grid.Column width={4}>
-            <ProfileSideNav />
+            <ProfileSideNav {...this.props} />
           </Grid.Column>
           <Grid.Column width={12}>
             <Switch>

@@ -9,6 +9,7 @@ import { getCurrentUser } from "./utils/helperFunctions";
 import NavBar from "./components/navbar";
 import ProjectPage from "./components/projects";
 import MemberList from "./components/members";
+import ProjectDetail from "./components/projectdetail";
 
 class App extends Component {
   state = {
@@ -24,7 +25,7 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <NavBar />
+        <NavBar onGetUserData={this.handleSetUser} />
         <Switch>
           <Route
             path="/home"
@@ -34,6 +35,12 @@ class App extends Component {
                 onGetUserData={this.handleSetUser}
                 user={this.state.user}
               />
+            )}
+          />
+          <Route
+            path="/project/:id"
+            render={(props) => (
+              <ProjectDetail {...props} user={this.state.user} />
             )}
           />
           <Route

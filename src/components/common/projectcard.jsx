@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Card, Label, Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 class ProjectCard extends Component {
   render() {
-    const { project } = this.props;
+    const { project, sections } = this.props;
     return (
       <Card key={project.id} color="orange" raised>
         {" "}
@@ -28,9 +29,30 @@ class ProjectCard extends Component {
             <div style={{ color: "rgba(0,0,0,.4)" }}>{project.creator}</div>
           </Card.Description>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button style={{ marginTop: "1.8rem" }} basic color="orange">
+            {/* <Button
+              as={Link}
+              // to={{
+              //   pathname: `/project/${project.id}`,
+              //   state: { sections: this.props.sections },
+              // }}
+              to={`/project/${project.id}`}
+              style={{ marginTop: "1.8rem" }}
+              basic
+              color="orange"
+            >
               More Details
-            </Button>
+            </Button> */}
+
+            <Link
+              className="ui orange basic button"
+              to={{
+                pathname: `/project/${project.id}`,
+                state: { sections: sections },
+              }}
+              style={{ marginTop: "1.8rem" }}
+            >
+              More Details
+            </Link>
           </div>
         </Card.Content>
       </Card>

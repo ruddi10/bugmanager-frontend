@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Loader } from "semantic-ui-react";
 import http from "../services/httpservice";
 import ProjectSkeleton from "./common/projectSkeleton";
+import { Redirect, Link } from "react-router-dom";
 class ProjectPage extends Component {
   state = {
     loading: true,
@@ -10,7 +11,18 @@ class ProjectPage extends Component {
     sortBy: "createdAt",
     Desc: true,
     heading: "Projects",
+    visible: false,
   };
+  sections = [
+    {
+      key: "project",
+      content: "Projects",
+      link: true,
+      to: "/projects",
+    },
+  ];
+  toggleVisibility = () =>
+    this.setState((prevState) => ({ visible: !prevState.visible }));
   handleSort = async (sortBy, Desc) => {
     const order = Desc ? "-" : "";
     this.setState({ loading: true });
@@ -47,6 +59,9 @@ class ProjectPage extends Component {
         Desc={this.state.Desc}
         currentPage={this.state.currentPage}
         onPagechange={this.handlePageChange}
+        visible={this.state.visible}
+        toggleVisibility={this.toggleVisibility}
+        sections={this.sections}
       />
     );
   }

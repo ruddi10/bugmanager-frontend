@@ -11,7 +11,16 @@ class MyProjects extends Component {
     sortBy: "createdAt",
     Desc: true,
     heading: "My Projects",
+    visible: false,
   };
+  sections = [
+    {
+      key: "project",
+      content: "My Projects",
+      link: true,
+      to: "/home/myprojects",
+    },
+  ];
   handleSort = async (sortBy, Desc) => {
     const order = Desc ? "-" : "";
     this.setState({ loading: true });
@@ -43,6 +52,8 @@ class MyProjects extends Component {
         onSort={this.handleSort}
         sortBy={this.state.sortBy}
         Desc={this.state.Desc}
+        visible={this.state.visible}
+        sections={this.sections}
       />
     );
   }

@@ -1,0 +1,32 @@
+.ui.labeled.icon.button.filter > .icon {
+  background: none;
+  font-size: 1.3rem;
+}
+
+.ui.grid > .hidden.transition {
+  display: none;
+  visibility: hidden;
+}
+.ui.basic.grey.button.filter {
+  margin-right: 1.8rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.ui.basic.blue.button.filter {
+  margin-right: 1.8rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #767676 !important;
+}
+.ui.form.filterform {
+  width: fit-content;
+  max-width: 100%;
+  min-width: 500px;
+  margin: auto;
+  border: 1px solid rgb(177, 167, 167);
+  padding: 3rem 3rem 0 3rem;
+  border-radius: 1rem;
+}
+.ui.form.filterform .inline.fields .field {
+  margin: auto;
+}

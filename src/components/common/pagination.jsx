@@ -14,6 +14,10 @@ class Paginator extends Component {
         ellipsisItem={null}
         firstItem={null}
         lastItem={null}
+        nextItem={
+          this.props.currentPage == this.props.totalpages ? null : undefined
+        }
+        prevItem={this.props.currentPage == 1 ? null : undefined}
         siblingRange={2}
         totalPages={this.props.totalpages}
         onPageChange={this.handlePageChange}

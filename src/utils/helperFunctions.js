@@ -16,3 +16,7 @@ export function getTotalPages(max, count) {
   if (max > count) return false;
   return Math.ceil(count / max);
 }
+
+// export function isNew(date){
+
+// }
