@@ -10,6 +10,8 @@ import ProjectList from "./projects";
 import IssueList from "./issueList";
 import { getCurrentUser } from "../utils/helperFunctions";
 import MyProjects from "./myprojects";
+import AssignedIssuePage from "./myassignedissues";
+import ReportedIssuePage from "./myreportedissue";
 class Home extends Component {
   state = {
     loading: true,
@@ -53,21 +55,13 @@ class Home extends Component {
               <Route
                 path="/home/rissues"
                 render={(props) => (
-                  <IssueList
-                    {...props}
-                    heading="Reported Issues"
-                    user={this.props.user}
-                  />
+                  <ReportedIssuePage {...props} user={this.props.user} />
                 )}
               />
               <Route
                 path="/home/aissues"
                 render={(props) => (
-                  <IssueList
-                    {...props}
-                    heading="Assigned Issues"
-                    user={this.props.user}
-                  />
+                  <AssignedIssuePage {...props} user={this.props.user} />
                 )}
               />
               <Route

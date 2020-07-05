@@ -28,6 +28,12 @@ export default class NavBar extends Component {
           />
           <Menu.Item
             className="links"
+            name="issues"
+            as={NavLink}
+            to="/issues"
+          />
+          <Menu.Item
+            className="links"
             name="members"
             as={NavLink}
             to="/members"

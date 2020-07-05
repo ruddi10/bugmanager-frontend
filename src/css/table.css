@@ -1,0 +1,15 @@
+.ui.table.usertable tr td {
+  border-top: 0;
+  font-weight: bold;
+}
+.ui.table.usertable tr th {
+  color: #767676;
+}
+.ui.table.usertable {
+  background-color: #f8f8f8;
+  border-spacing: 0 1rem;
+  border: 0;
+}
+.ui.table.usertable tr {
+  background-color: white;
+}

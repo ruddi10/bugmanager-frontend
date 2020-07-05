@@ -61,6 +61,7 @@ class ProjectDetail extends Component {
     });
     const teamList = project.team_list.map((member) => (
       <List.Item>
+        <Image avatar src={member.profilepic} />
         <List.Content>
           <List.Header
             style={{
@@ -85,7 +86,14 @@ class ProjectDetail extends Component {
                 alignItems: "center",
               }}
             >
-              <Segment style={{ border: "none", boxShadow: "none" }} padded>
+              <Segment
+                style={{
+                  border: "none",
+                  boxShadow: "none",
+                  backgroundColor: " #F8F8F8",
+                }}
+                padded
+              >
                 <Header as="h1" color="orange">
                   {project.title}
                 </Header>

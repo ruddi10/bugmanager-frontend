@@ -9,8 +9,8 @@ class IssueCard extends Component {
   };
   priority = {
     High: "red",
-    Moderate: "orange",
-    Low: "#1ab2ff",
+    Moderate: "olive",
+    Low: "orange",
   };
 
   render() {

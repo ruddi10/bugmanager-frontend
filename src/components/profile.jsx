@@ -10,8 +10,15 @@ class Profile extends Component {
     return (
       <Grid centered verticalAlign="bottom" columns={2}>
         <Grid.Row>
-          <Grid.Column width={5}>
-            <Image src={profilepic} size="small" circular />
+          <Grid.Column
+            width={5}
+            style={{
+              display: "flex",
+              flexFlow: "column",
+              alignItems: "center",
+            }}
+          >
+            <Image src={profile.profilepic} size="small" circular />
             <Header as="h3">@{username}</Header>
           </Grid.Column>
           <Grid.Column width={9}>

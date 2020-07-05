@@ -10,6 +10,8 @@ import NavBar from "./components/navbar";
 import ProjectPage from "./components/projects";
 import MemberList from "./components/members";
 import ProjectDetail from "./components/projectdetail";
+import IssuePage from "./components/issues";
+import UserDetail from "./components/userdetail";
 
 class App extends Component {
   state = {
@@ -48,6 +50,14 @@ class App extends Component {
             render={(props) => (
               <ProjectPage {...props} user={this.state.user} />
             )}
+          />
+          <Route
+            path="/issues"
+            render={(props) => <IssuePage {...props} user={this.state.user} />}
+          />
+          <Route
+            path="/member/:id"
+            render={(props) => <UserDetail {...props} user={this.state.user} />}
           />
           <Route
             path="/members"
