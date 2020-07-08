@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Grid, Image, Segment, Header, Button } from "semantic-ui-react";
 import { isCurrentUser } from "../utils/helperFunctions";
 import profilepic from "../sample pics/profile.jpeg";
+import { Link } from "react-router-dom";
 class Profile extends Component {
   render() {
     const { user, loginUser } = this.props;
@@ -35,7 +36,9 @@ class Profile extends Component {
             )}
             {isCurrentUser(id) && (
               <Fragment>
-                <Button positive>Create Project</Button>
+                <Button positive as={Link} to="/addproject">
+                  Create Project
+                </Button>
                 <Button color="grey">Change Username</Button>
               </Fragment>
             )}

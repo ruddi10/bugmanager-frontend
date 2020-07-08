@@ -41,7 +41,7 @@ class MemberList extends Component {
     const order = Desc ? "-" : "";
     this.setState({ loading: true });
     const { data: users } = await http.get(
-      `http://127.0.0.1:8000/bugmanager/user/?page=1&ordering=${order}${sortBy}`
+      `http://127.0.0.1:8000/bugmanager/user/?limit=10&offset=0&ordering=${order}${sortBy}`
     );
     this.setState({ loading: false, sortBy, users, Desc, currentPage: 1 });
   };
@@ -49,14 +49,16 @@ class MemberList extends Component {
     const order = this.state.Desc ? "-" : "";
     this.setState({ loading: true });
     const { data: users } = await http.get(
-      `http://127.0.0.1:8000/bugmanager/user/?page=${currentPage}&ordering=${order}${this.state.sortBy}`
+      `http://127.0.0.1:8000/bugmanager/user/?limit=10&offset=${
+        (this.state.currentPage - 1) * 10
+      }&ordering=${order}${this.state.sortBy}`
     );
     this.setState({ loading: false, currentPage, users });
   };
   async componentDidMount() {
     const order = this.state.Desc ? "-" : "";
     const { data: users } = await http.get(
-      `http://127.0.0.1:8000/bugmanager/user/?page=1&ordering=${order}${this.state.sortBy}`
+      `http://127.0.0.1:8000/bugmanager/user/?limit=10&offset=0&ordering=${order}${this.state.sortBy}`
     );
     this.setState({ loading: false, users });
   }

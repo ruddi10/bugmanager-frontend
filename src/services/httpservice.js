@@ -1,8 +1,13 @@
 import axios from "axios";
 function createAxiosIntercepter() {
   const interceptor = axios.interceptors.response.use(null, (error) => {
-    if (!error.response) {
-      console.log(error);
+    if (!error.response || error.response.status == 500) {
+      console.log(error.response);
+      // axios.interceptors.response.eject(interceptor);
+      // console.log("yoooo");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("access");
+      window.location = "/servererror";
       return Promise.reject(error);
     }
     if (error.response.status !== 401) {
@@ -21,9 +26,12 @@ function createAxiosIntercepter() {
         return axios(error.response.config);
       })
       .catch((ex) => {
-        localStorage.removeItem("refresh");
-        localStorage.removeItem("access");
-        window.location = "/";
+        if (ex.response.status == 401) {
+          localStorage.removeItem("refresh");
+          localStorage.removeItem("access");
+          console.log("hi");
+          window.location = "/";
+        }
         return Promise.reject(ex);
       })
       .finally(createAxiosIntercepter);

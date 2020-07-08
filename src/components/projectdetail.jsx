@@ -13,20 +13,22 @@ import {
   Statistic,
 } from "semantic-ui-react";
 import MyBreadcrumb from "./common/mybreadcrumb";
+import { toast } from "react-toastify";
 import http from "../services/httpservice";
 import { Link } from "react-router-dom";
 import parse from "html-react-parser";
 import ReadMoreReact from "read-more-react";
 import IssueList from "./issueList";
 import IssueGroup from "./issuegroup";
+import { getCurrentUser } from "../utils/helperFunctions";
+import MyModal from "./mymodal";
 class ProjectDetail extends Component {
-  state = { loading: true, project: {} };
+  state = { loading: true, project: {}, modalOpen: false };
   async componentDidMount() {
     const { data: project } = await http.get(
       `http://127.0.0.1:8000/bugmanager/project/${this.props.match.params.id}/`
     );
     this.setState({ project, loading: false });
-    console.log(project);
   }
   hasauthority = (user, project) => {
     const isCreator = user.id == project.get_creator.id;
@@ -34,6 +36,27 @@ class ProjectDetail extends Component {
 
     console.log(isTeam);
     return user.is_superuser || Boolean(isTeam.length) || isCreator;
+  };
+  handleOpen = () => this.setState({ modalOpen: true });
+
+  handleClose = () => this.setState({ modalOpen: false });
+  handleDelete = async () => {
+    try {
+      const response = await http.delete(
+        `http://127.0.0.1:8000/bugmanager/project/${this.props.match.params.id}/`
+      );
+      console.log(response);
+      toast.success("Successfully Deleted");
+      this.props.history.replace(`/projects`);
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status == 403) {
+        toast.error("Not Allowed");
+      } else {
+        toast.error("Request Failed");
+      }
+    }
+    this.setState({ modalOpen: false });
   };
   render() {
     if (this.state.loading) return <Loader active size="massive" />;
@@ -60,7 +83,10 @@ class ProjectDetail extends Component {
       link: false,
     });
     const teamList = project.team_list.map((member) => (
-      <List.Item>
+      <List.Item
+        as={Link}
+        to={member.id == getCurrentUser() ? "/home" : `/member/${member.id}`}
+      >
         <Image avatar src={member.profilepic} />
         <List.Content>
           <List.Header
@@ -115,11 +141,19 @@ class ProjectDetail extends Component {
                   Report Bug
                 </Button>{" "}
                 {this.hasauthority(user, project) && (
-                  <Button negative>
-                    {" "}
-                    <Icon name="delete" color="white" />
-                    Delete Project
-                  </Button>
+                  <MyModal
+                    trig={
+                      <Button negative onClick={this.handleOpen}>
+                        {" "}
+                        <Icon name="trash" color="white" />
+                        Delete Project
+                      </Button>
+                    }
+                    modalOpen={this.state.modalOpen}
+                    handleClose={this.handleClose}
+                    handleDelete={this.handleDelete}
+                    cont=" Do you really want to delete this item? This change cannot be undone."
+                  />
                 )}
               </div>
             </Grid.Row>
@@ -140,6 +174,12 @@ class ProjectDetail extends Component {
                       color: "grey",
                       fontSize: "1rem",
                     }}
+                    as={Link}
+                    to={
+                      project.get_creator.id == getCurrentUser()
+                        ? "/home"
+                        : `/member/${project.get_creator.id}`
+                    }
                   >
                     {project.creator}
                   </Grid.Column>

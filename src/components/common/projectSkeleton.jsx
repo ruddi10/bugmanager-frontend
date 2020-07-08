@@ -17,6 +17,7 @@ import Paginator from "./pagination";
 import { getTotalPages } from "../../utils/helperFunctions";
 import Filter from "./filter";
 import FilterForm from "./filterform";
+import { Link } from "react-router-dom";
 class ProjectSkeleton extends Component {
   sortOptions = [
     {
@@ -60,7 +61,13 @@ class ProjectSkeleton extends Component {
                 handleClick={this.props.toggleVisibility}
                 visible={this.props.visible}
               />
-              <Button size="small" color="orange">
+              <Button
+                size="small"
+                color="orange"
+                as={Link}
+                to="/addproject"
+                style={{ padding: "1rem", fontSize: "1rem" }}
+              >
                 <Icon name="add" />
                 Add Project
               </Button>

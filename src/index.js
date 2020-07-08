@@ -8,6 +8,7 @@ import "./css/pagination.css";
 import "./css/filter.css";
 import "./css/breadcrumb.css";
 import "./css/table.css";
+import "./css/forms.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "semantic-ui-css/semantic.min.css";

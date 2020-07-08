@@ -1,0 +1,26 @@
+.ui.container.Formcontainer {
+  max-width: 1000px;
+  margin-top: 4rem;
+  padding: 2rem;
+}
+.ui.header.formheading {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fc9945;
+}
+
+.ui.small.form.customform {
+  margin-top: 4rem;
+  font-size: 1.1rem;
+  padding: 1rem;
+}
+.ui.small.form.customform .field {
+  margin-bottom: 2rem;
+}
+.ck-editor__editable_inline {
+  min-height: 200px;
+}
+
+.ui.small.form.customform .field > label {
+  margin-bottom: 1rem;
+}
