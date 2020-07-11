@@ -16,6 +16,7 @@ import UserDetail from "./components/userdetail";
 import AddProjectForm from "./components/addprojectform";
 import ServerError from "./components/servererror";
 import NotFound from "./components/notfound";
+import AddIssueForm from "./components/addissueform";
 
 class App extends Component {
   state = {
@@ -42,6 +43,19 @@ class App extends Component {
                 onGetUserData={this.handleSetUser}
                 user={this.state.user}
               />
+            )}
+          />
+          <Route
+            path="/editproject"
+            exact
+            render={(props) => (
+              <AddProjectForm {...props} user={this.state.user} />
+            )}
+          />
+          <Route
+            path="/addissue"
+            render={(props) => (
+              <AddIssueForm {...props} user={this.state.user} />
             )}
           />
           <Route

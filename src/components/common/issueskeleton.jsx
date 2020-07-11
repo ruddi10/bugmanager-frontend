@@ -18,6 +18,7 @@ import { getTotalPages } from "../../utils/helperFunctions";
 import Filter from "./filter";
 import FilterForm from "./filterform";
 import IssueGroup from "../issuegroup";
+import {Link} from "react-router-dom";
 class IssueSkeleton extends Component {
   sortOptions = [
     {
@@ -64,7 +65,7 @@ class IssueSkeleton extends Component {
                 handleClick={this.props.toggleVisibility}
                 visible={this.props.visible}
               />
-              <Button size="small" color="orange">
+              <Button as={Link} to="/addissue" size="small" color="orange">
                 <Icon name="add" />
                 Add Issue
               </Button>

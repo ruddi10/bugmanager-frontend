@@ -6,6 +6,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import Forms from "./common/forms";
+// import ClassicEditor from "../assets/ckeditor5-build-classic/src/ckeditor";
 
 const Joi = require("@hapi/joi");
 
@@ -14,13 +15,14 @@ class AddProjectForm extends Forms {
     data: {
       title: "",
       team: [],
-      is_deployed: undefined,
+      is_deployed: false,
       wiki: "",
     },
     useroptions: [],
     loading: true,
     errors: {},
     responseError: null,
+    heading: "New Project",
   };
 
   schema = Joi.object({
@@ -40,21 +42,55 @@ class AddProjectForm extends Forms {
       return null;
     }
     try {
-      const response = await http.post(
-        `http://127.0.0.1:8000/bugmanager/project/`,
-        this.state.data
-      );
-      console.log(response);
-      if (response.status == 201) {
-        this.props.history.replace(`/project/${response.data.id}`);
+      if (this.props.match.path == "/editproject") {
+        const response = await http.put(
+          `http://127.0.0.1:8000/bugmanager/project/${this.props.location.state.project}/`,
+          this.state.data
+        );
+        toast.success("Successfully Updated");
+        this.props.history.replace(
+          `/project/${this.props.location.state.project}`
+        );
+      } else {
+        const response = await http.post(
+          `http://127.0.0.1:8000/bugmanager/project/`,
+          this.state.data
+        );
+        console.log(response);
+        if (response.status == 201) {
+          toast.success("Successfully Created");
+          this.props.history.replace(`/project/${response.data.id}`);
+        }
       }
     } catch (err) {
       console.log(err.response);
-      this.setState({ responseError: true });
-      toast.error("Check Submission");
+      if (err.response.status == 403) {
+        toast.error("Not Allowed");
+      } else {
+        this.setState({ responseError: true });
+        toast.error("Check Submission");
+      }
     }
   };
   async componentDidMount() {
+    if (this.props.match.path == "/editproject") {
+      if (!this.props.location.state || !this.props.location.state.project) {
+        this.props.history.replace(`/notfound`);
+        return;
+      }
+      const { data: project } = await http.get(
+        `http://127.0.0.1:8000/bugmanager/project/${this.props.location.state.project}/`
+      );
+      this.setState({
+        data: {
+          title: project.title,
+          team: project.team,
+          is_deployed: project.is_deployed,
+          wiki: project.wiki,
+        },
+        heading: "Edit Project",
+      });
+    }
     const { data: users } = await http.get(
       `http://127.0.0.1:8000/bugmanager/user/`
     );
@@ -69,7 +105,7 @@ class AddProjectForm extends Forms {
       <Loader active size="massive" />
     ) : (
       <Container className="Formcontainer">
-        <Header className="formheading">New Project</Header>
+        <Header className="formheading">{this.state.heading}</Header>
         <Form
           onSubmit={this.handleSubmit}
           className="customform"
@@ -82,7 +118,9 @@ class AddProjectForm extends Forms {
             error={this.state.errors.title}
             label="Project Title"
             placeholder="Title"
+            required
             onChange={this.handleChange}
+            value={this.state.data.title}
           />
           <Form.Dropdown
             placeholder="Team"
@@ -95,6 +133,7 @@ class AddProjectForm extends Forms {
             options={this.state.useroptions}
             onChange={this.handleChange}
             name="team"
+            value={this.state.data.team}
           />
           <Form.Select
             fluid
@@ -105,12 +144,14 @@ class AddProjectForm extends Forms {
             required
             onChange={this.handleChange}
             name="is_deployed"
+            value={this.state.data.is_deployed}
           />
 
           <Form.Field>
             <label>Description</label>
             <CKEditor
               editor={ClassicEditor}
+              data={this.state.data.wiki}
               config={{
                 placeholder: "Some description of your project....",
                 toolbar: [

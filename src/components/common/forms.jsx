@@ -10,7 +10,7 @@ class Forms extends Component {
   };
   handleEditor = (e, info) => {
     const data = { ...this.state.data };
-    data.wiki = info.getData();
+    data.description = info.getData();
     this.setState({ data });
   };
 

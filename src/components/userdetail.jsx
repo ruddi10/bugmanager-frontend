@@ -3,6 +3,7 @@ import http from "../services/httpservice";
 import ProfileColumn from "./common/profilesection";
 import { Loader, Container } from "semantic-ui-react";
 import MyBreadcrumb from "./common/mybreadcrumb";
+import { Redirect } from "react-router-dom";
 class UserDetail extends Component {
   state = { loading: true, user: {}, rissues: {}, aissues: {} };
   sections = [
@@ -30,6 +31,9 @@ class UserDetail extends Component {
       return <Loader active size="massive" />;
     }
     const { user } = this.state;
+    if (user.profile.is_disabled) {
+      return <Redirect to="/notfound" />;
+    }
     this.sections.push({
       key: user.id,
       content: user.username,

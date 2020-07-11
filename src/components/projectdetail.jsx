@@ -23,7 +23,7 @@ import IssueGroup from "./issuegroup";
 import { getCurrentUser } from "../utils/helperFunctions";
 import MyModal from "./mymodal";
 class ProjectDetail extends Component {
-  state = { loading: true, project: {}, modalOpen: false };
+  state = { loading: true, project: {} };
   async componentDidMount() {
     const { data: project } = await http.get(
       `http://127.0.0.1:8000/bugmanager/project/${this.props.match.params.id}/`
@@ -33,13 +33,8 @@ class ProjectDetail extends Component {
   hasauthority = (user, project) => {
     const isCreator = user.id == project.get_creator.id;
     const isTeam = project.team_list.filter((member) => member.id == user.id);
-
-    console.log(isTeam);
     return user.is_superuser || Boolean(isTeam.length) || isCreator;
   };
-  handleOpen = () => this.setState({ modalOpen: true });
-
-  handleClose = () => this.setState({ modalOpen: false });
   handleDelete = async () => {
     try {
       const response = await http.delete(
@@ -56,7 +51,6 @@ class ProjectDetail extends Component {
         toast.error("Request Failed");
       }
     }
-    this.setState({ modalOpen: false });
   };
   render() {
     if (this.state.loading) return <Loader active size="massive" />;
@@ -130,28 +124,40 @@ class ProjectDetail extends Component {
               <div>
                 {" "}
                 {this.hasauthority(user, project) && (
-                  <Button secondary>
+                  <Button
+                    as={Link}
+                    to={{
+                      pathname: "/editproject",
+                      state: { project: project.id },
+                    }}
+                    secondary
+                  >
                     {" "}
                     <Icon name="edit" color="white" />
                     Edit Project
                   </Button>
                 )}
-                <Button positive>
+                <Button
+                  as={Link}
+                  to={{
+                    pathname: "/addissue",
+                    state: { project: project },
+                  }}
+                  positive
+                >
                   <Icon name="add" color="white" />
                   Report Bug
                 </Button>{" "}
                 {this.hasauthority(user, project) && (
                   <MyModal
-                    trig={
-                      <Button negative onClick={this.handleOpen}>
+                    trig={(a) => (
+                      <Button negative onClick={a}>
                         {" "}
                         <Icon name="trash" color="white" />
                         Delete Project
                       </Button>
-                    }
-                    modalOpen={this.state.modalOpen}
-                    handleClose={this.handleClose}
-                    handleDelete={this.handleDelete}
+                    )}
+                    handleClick={this.handleDelete}
                     cont=" Do you really want to delete this item? This change cannot be undone."
                   />
                 )}

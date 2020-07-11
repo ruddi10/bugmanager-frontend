@@ -26,12 +26,11 @@ function createAxiosIntercepter() {
         return axios(error.response.config);
       })
       .catch((ex) => {
-        if (ex.response.status == 401) {
-          localStorage.removeItem("refresh");
-          localStorage.removeItem("access");
-          console.log("hi");
-          window.location = "/";
-        }
+        localStorage.removeItem("refresh");
+        localStorage.removeItem("access");
+        console.log("hi");
+        window.location = "/";
+
         return Promise.reject(ex);
       })
       .finally(createAxiosIntercepter);

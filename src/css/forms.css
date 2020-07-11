@@ -24,3 +24,9 @@
 .ui.small.form.customform .field > label {
   margin-bottom: 1rem;
 }
+
+.ui.form .disabled.field.customDisable {
+  opacity: 1;
+  cursor: not-allowed;
+  pointer-events: all;
+}
