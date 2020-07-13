@@ -18,7 +18,7 @@ import { getTotalPages } from "../../utils/helperFunctions";
 import Filter from "./filter";
 import FilterForm from "./filterform";
 import IssueGroup from "../issuegroup";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 class IssueSkeleton extends Component {
   sortOptions = [
     {
@@ -37,7 +37,6 @@ class IssueSkeleton extends Component {
       value: "updatedAt",
     },
   ];
-
   render() {
     return (
       <Container className={this.props.cname ? this.props.cname : ""}>
@@ -82,7 +81,11 @@ class IssueSkeleton extends Component {
           </Transition>
 
           <Grid.Row>
-            <IssueGroup issues={this.props.issues.results} showproj={true} />
+            <IssueGroup
+              sections={this.props.sections}
+              issues={this.props.issues.results}
+              showproj={true}
+            />
           </Grid.Row>
         </Grid>
         {getTotalPages(5, this.props.issues.count) && (

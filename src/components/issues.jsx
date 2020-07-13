@@ -37,11 +37,21 @@ class IssuePage extends Component {
     );
     this.setState({ loading: false, issues });
   }
+  sections = [
+    {
+      key: "issue",
+      content: "Issues",
+      link: true,
+      //active: false,
+      to: "/issues",
+    },
+  ];
   render() {
     return this.state.loading ? (
       <Loader active size="massive" />
     ) : (
       <IssueSkeleton
+        sections={this.sections}
         issues={this.state.issues}
         heading={this.state.heading}
         cname="projectcontainer top"

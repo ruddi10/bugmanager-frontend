@@ -4,7 +4,7 @@ function createAxiosIntercepter() {
     if (!error.response || error.response.status == 500) {
       console.log(error.response);
       // axios.interceptors.response.eject(interceptor);
-      // console.log("yoooo");
+      console.log("yoooo");
       localStorage.removeItem("refresh");
       localStorage.removeItem("access");
       window.location = "/servererror";
@@ -26,11 +26,12 @@ function createAxiosIntercepter() {
         return axios(error.response.config);
       })
       .catch((ex) => {
-        localStorage.removeItem("refresh");
-        localStorage.removeItem("access");
-        console.log("hi");
-        window.location = "/";
-
+        if (ex.response.config.url == "http://127.0.0.1:8000/api/refresh/") {
+          localStorage.removeItem("refresh");
+          localStorage.removeItem("access");
+          console.log("hi");
+          window.location = "/";
+        }
         return Promise.reject(ex);
       })
       .finally(createAxiosIntercepter);
@@ -57,4 +58,5 @@ export default {
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
+  patch: axios.patch,
 };

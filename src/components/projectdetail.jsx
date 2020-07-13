@@ -76,6 +76,13 @@ class ProjectDetail extends Component {
       active: true,
       link: false,
     });
+    let propsections = [...section];
+    propsections.push({
+      key: project.id,
+      content: project.title,
+      link: true,
+      to: `/project/${project.id}`,
+    });
     const teamList = project.team_list.map((member) => (
       <List.Item
         as={Link}
@@ -272,7 +279,11 @@ class ProjectDetail extends Component {
               </Grid>
             </Grid.Row>
             <Grid.Row columns={1}>
-              <IssueGroup issues={project.bugs} showproj={false} />
+              <IssueGroup
+                sections={propsections}
+                issues={project.bugs}
+                showproj={false}
+              />
             </Grid.Row>
             {project.total_bugs > project.bugs.length && (
               <Grid.Row centered>

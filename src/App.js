@@ -17,6 +17,7 @@ import AddProjectForm from "./components/addprojectform";
 import ServerError from "./components/servererror";
 import NotFound from "./components/notfound";
 import AddIssueForm from "./components/addissueform";
+import IssueDetail from "./components/issuedetail";
 
 class App extends Component {
   state = {
@@ -50,6 +51,12 @@ class App extends Component {
             exact
             render={(props) => (
               <AddProjectForm {...props} user={this.state.user} />
+            )}
+          />
+          <Route
+            path="/issue/:id"
+            render={(props) => (
+              <IssueDetail {...props} user={this.state.user} />
             )}
           />
           <Route

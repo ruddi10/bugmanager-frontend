@@ -3,10 +3,11 @@ import { Form, Loader, Container, Header, Message } from "semantic-ui-react";
 import http from "../services/httpservice";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 import { toast } from "react-toastify";
 import _ from "lodash";
 import Forms from "./common/forms";
-// import ClassicEditor from "../assets/ckeditor5-build-classic/src/ckeditor";
+// import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic/src/classiceditor.js';
 
 const Joi = require("@hapi/joi");
 
@@ -36,7 +37,11 @@ class AddProjectForm extends Forms {
     { key: "d", text: "Deployed", value: true },
     { key: "p", text: "Pending", value: false },
   ];
-
+  handleEditor = (e, info) => {
+    const data = { ...this.state.data };
+    data.wiki = info.getData();
+    this.setState({ data });
+  };
   handleSubmit = async (e) => {
     if (!this.validate()) {
       return null;

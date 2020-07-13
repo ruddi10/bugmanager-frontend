@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Card, Label } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 class IssueCard extends Component {
   colors = {
     Pending: "red",
@@ -35,7 +36,14 @@ class IssueCard extends Component {
               justifyContent: "space-between",
             }}
           >
-            <div>{issue.heading}</div>
+            <Link
+              to={{
+                pathname: `/issue/${issue.issue_id}`,
+                state: { sections: this.props.sections },
+              }}
+            >
+              {issue.heading}
+            </Link>
             <Label color={this.colors[issue.status]} horizontal>
               {issue.status}
             </Label>

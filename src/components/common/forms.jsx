@@ -8,11 +8,6 @@ class Forms extends Component {
     data[info.name] = info.value;
     this.setState({ data, errors });
   };
-  handleEditor = (e, info) => {
-    const data = { ...this.state.data };
-    data.description = info.getData();
-    this.setState({ data });
-  };
 
   validate = () => {
     const result = this.schema.validate(this.state.data, { abortEarly: false });

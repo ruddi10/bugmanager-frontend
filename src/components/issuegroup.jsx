@@ -8,7 +8,11 @@ class IssueGroup extends Component {
     let list;
     if (issues.length)
       list = issues.map((issue) => (
-        <IssueCard issue={issue} showproj={showproj} />
+        <IssueCard
+          sections={this.props.sections}
+          issue={issue}
+          showproj={showproj}
+        />
       ));
     else list = <h1>NO ISSUES </h1>;
     return <Fragment>{list}</Fragment>;
