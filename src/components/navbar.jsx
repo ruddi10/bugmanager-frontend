@@ -3,7 +3,7 @@ import { Menu, Segment } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 import { getCurrentUser } from "../utils/helperFunctions";
 import http from "../services/httpservice";
-
+import Avatar from "react-avatar";
 export default class NavBar extends Component {
   async componentDidMount() {
     if (getCurrentUser()) {
@@ -39,7 +39,14 @@ export default class NavBar extends Component {
             to="/members"
           />
           <Menu.Menu position="right">
-            <Menu.Item className="links" name="logout" />
+            {/* <Menu.Item className="links" name="logout" /> */}
+            {this.props.user.profile && (
+              <Avatar
+                name={this.props.user.profile.full_name}
+                round={true}
+                size="45"
+              />
+            )}
           </Menu.Menu>
         </Menu>
       </div>

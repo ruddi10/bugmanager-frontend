@@ -33,7 +33,7 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <NavBar onGetUserData={this.handleSetUser} />
+        <NavBar onGetUserData={this.handleSetUser} user={this.state.user} />
         <ToastContainer />
         <Switch>
           <Route
