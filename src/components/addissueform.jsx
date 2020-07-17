@@ -80,6 +80,7 @@ class AddIssueForm extends Forms {
       return null;
     }
     try {
+      this.setState({ loading: true });
       let data = { ...this.state.data };
       if (!data.priority) delete data.priority;
       const response = await http.post(
@@ -89,6 +90,7 @@ class AddIssueForm extends Forms {
       toast.success("Successfully Reported");
       this.props.history.replace(`/project/${this.state.data.project}`);
     } catch (err) {
+      this.setState({ loading: false });
       if (err.response.status == 403) {
         toast.error("Not Allowed");
       } else {
