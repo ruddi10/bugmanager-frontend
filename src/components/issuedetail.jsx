@@ -10,12 +10,14 @@ import {
   Form,
   Button,
   Icon,
+  Divider,
+  Comment,
 } from "semantic-ui-react";
 import http from "../services/httpservice";
 import MyBreadcrumb from "./common/mybreadcrumb";
 import MyModal from "./mymodal";
 import { toast } from "react-toastify";
-
+import parse from "html-react-parser";
 class IssueDetail extends Component {
   state = {
     loading: true,
@@ -24,6 +26,34 @@ class IssueDetail extends Component {
     modalOpen: false,
     teamOptions: [],
     assignmodalOpen: false,
+    ws: null,
+    comment: null,
+    mycomment: "",
+  };
+  connect = () => {
+    const ws = new WebSocket(
+      "ws://localhost:8000/ws/comments/" + this.props.match.params.id + "/"
+    );
+    ws.onopen = () => {
+      console.log("connected");
+    };
+    ws.onclose = () => {
+      console.log("disconnected");
+    };
+    ws.onmessage = (evt) => {
+      let response = JSON.parse(evt.data);
+      if (response.end_message) {
+        if (response.is_reconnect) {
+          const ws = this.connect();
+          this.setState({ ws });
+        }
+        toast.error(response.end_message);
+      } else {
+        const { comment: message } = response;
+        this.setState({ comment: [...this.state.comment, message] });
+      }
+    };
+    return ws;
   };
   async componentDidMount() {
     const { data: issue } = await http.get(
@@ -37,7 +67,16 @@ class IssueDetail extends Component {
       return { key: member.id, text: member.name, value: member.id };
     });
     const assigned_to = issue.assigned_to;
-    this.setState({ issue, loading: false, data, teamOptions, assigned_to });
+    const ws = this.connect();
+    this.setState({ ws: ws });
+    this.setState({
+      issue,
+      loading: false,
+      data,
+      teamOptions,
+      assigned_to,
+      comment: issue.comment,
+    });
   }
   colors = {
     Pending: "red",
@@ -134,6 +173,10 @@ class IssueDetail extends Component {
     const assigned_to = info.value;
     this.setState({ assigned_to });
   };
+  handleCommentChange = (e, info) => {
+    const mycomment = info.value;
+    this.setState({ mycomment });
+  };
   isReassign = (user, issue) => {
     if (issue.assigned_to) {
       const isAssigner = issue.assigned_by == user.id;
@@ -141,8 +184,20 @@ class IssueDetail extends Component {
     }
     return true;
   };
+
+  handleComment = (e, info) => {
+    e.preventDefault();
+    let data = {
+      message: this.state.mycomment,
+      token: localStorage.getItem("access"),
+      rtoken: localStorage.getItem("refresh"),
+    };
+    this.state.ws.send(JSON.stringify(data));
+    this.setState({ mycomment: "" });
+  };
   render() {
     if (this.state.loading) return <Loader active size="massive" />;
+
     const { state } = this.props.location;
     let section = state
       ? state.sections
@@ -156,7 +211,8 @@ class IssueDetail extends Component {
           },
         ];
 
-    const { issue } = this.state;
+    const { issue, comment } = this.state;
+
     const { user } = this.props;
     let sections = [...section];
     sections.push({
@@ -166,11 +222,30 @@ class IssueDetail extends Component {
       link: false,
     });
     const taglist = issue.tags.map((tag) => <Label>{tag}</Label>);
+    let commentlist;
+    if (comment.length) {
+      commentlist = comment.map((c) => {
+        return (
+          <Comment>
+            <Comment.Avatar src={c.commented_by.profile.profilepic} />
+            <Comment.Content>
+              <Comment.Author as="a">{c.commented_by.username}</Comment.Author>
+              <Comment.Metadata>
+                <div>{c.createdAt}</div>
+              </Comment.Metadata>
+              <Comment.Text>{c.description}</Comment.Text>
+            </Comment.Content>
+          </Comment>
+        );
+      });
+    } else {
+      commentlist = <Header>No Comments Yet</Header>;
+    }
     return (
       <Fragment>
         <MyBreadcrumb sections={sections} />
         <Container className="mycustomcontainer">
-          <Grid columns={1} divided="vertically">
+          <Grid columns={1}>
             <Grid.Row
               style={{
                 justifyContent: "space-between",
@@ -311,7 +386,7 @@ class IssueDetail extends Component {
                 )}
               </div>
             </Grid.Row>
-
+            <Divider />
             <Grid.Row>
               <Grid columns={2} padded>
                 <Grid.Row>
@@ -352,7 +427,7 @@ class IssueDetail extends Component {
                     <Label.Group color="blue">{taglist}</Label.Group>
                   </Grid.Column>
                 </Grid.Row>
-                {/* <Grid.Row>
+                <Grid.Row>
                   <Grid.Column
                     style={{
                       color: "#767676",
@@ -360,11 +435,130 @@ class IssueDetail extends Component {
                       fontSize: "1rem",
                     }}
                   >
-                    Team
-                  </Grid.Column> */}
+                    Reported At
+                  </Grid.Column>
+                  <Grid.Column
+                    style={{
+                      color: "grey",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {issue.createdAt}
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                  <Grid.Column
+                    style={{
+                      color: "#767676",
+                      fontWeight: "bolder",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    Assigned To
+                  </Grid.Column>
+                  <Grid.Column
+                    style={{
+                      color: "grey",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {issue.assigned_to
+                      ? issue.assign_info.assigned_to.name
+                      : "Not Assigned Yet"}
+                  </Grid.Column>
+                </Grid.Row>
+
+                {issue.assigned_to && (
+                  <Grid.Row>
+                    <Grid.Column
+                      style={{
+                        color: "#767676",
+                        fontWeight: "bolder",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      Assigned By
+                    </Grid.Column>
+                    <Grid.Column
+                      style={{
+                        color: "grey",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      {issue.assign_info.assigned_by.name}
+                    </Grid.Column>
+                  </Grid.Row>
+                )}
+                {issue.assigned_to && (
+                  <Grid.Row>
+                    <Grid.Column
+                      style={{
+                        color: "#767676",
+                        fontWeight: "bolder",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      Assigned At
+                    </Grid.Column>
+                    <Grid.Column
+                      style={{
+                        color: "grey",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      {issue.assignedAt}
+                    </Grid.Column>
+                  </Grid.Row>
+                )}
+
+                <Grid.Row columns={1}>
+                  <Grid.Column>
+                    <div
+                      style={{
+                        color: "#767676",
+                        fontWeight: "bolder",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      <Divider horizontal> Description</Divider>
+                    </div>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <div
+                    // style={{
+                    //   color: "grey",
+                    //   fontSize: "1rem",
+                    // }}
+                    >
+                      {issue.description
+                        ? parse(issue.description)
+                        : "Not Available"}
+                    </div>
+                  </Grid.Column>
+                </Grid.Row>
               </Grid>
             </Grid.Row>
           </Grid>
+
+          <Comment.Group>
+            <Header as="h3" dividing>
+              Comments
+            </Header>
+
+            {commentlist}
+            <Form reply onSubmit={this.handleComment}>
+              <Form.TextArea
+                value={this.state.mycomment}
+                onChange={this.handleCommentChange}
+              />
+              <Button
+                content="Add Reply"
+                labelPosition="left"
+                icon="edit"
+                primary
+              />
+            </Form>
+          </Comment.Group>
         </Container>
       </Fragment>
     );
