@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import errorpic from "../sample pics/internal-server-error.jpg";
+import errorpic from "../samplepics/internal-server-error.jpg";
 import { Image } from "semantic-ui-react";
 class ServerError extends Component {
   state = {};

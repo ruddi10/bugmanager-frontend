@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Menu, Segment } from "semantic-ui-react";
+import React, { Component, Fragment, createRef } from "react";
+import { Menu, Segment, Sticky, Popup, Icon } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 import { getCurrentUser } from "../utils/helperFunctions";
 import http from "../services/httpservice";
@@ -14,42 +14,75 @@ export default class NavBar extends Component {
     }
     console.log("Navbar Mounted");
   }
+
+  handleLogout = () => {
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("access");
+    window.location = "/";
+  };
   render() {
     return (
-      <div>
+      <Sticky context={this.props.contextRef}>
         <Menu tabular className="navi">
           <Menu.Item name="bugzilla" className="logo" />
-          <Menu.Item className="links" name="home" as={NavLink} to="/home" />
-          <Menu.Item
-            className="links"
-            name="projects"
-            as={NavLink}
-            to="/projects"
-          />
-          <Menu.Item
-            className="links"
-            name="issues"
-            as={NavLink}
-            to="/issues"
-          />
-          <Menu.Item
-            className="links"
-            name="members"
-            as={NavLink}
-            to="/members"
-          />
-          <Menu.Menu position="right">
-            {/* <Menu.Item className="links" name="logout" /> */}
-            {this.props.user.profile && (
-              <Avatar
-                name={this.props.user.profile.full_name}
-                round={true}
-                size="45"
+          {getCurrentUser() && (
+            <Fragment>
+              <Menu.Item
+                className="links"
+                name="home"
+                as={NavLink}
+                to="/home"
               />
-            )}
-          </Menu.Menu>
+              <Menu.Item
+                className="links"
+                name="projects"
+                as={NavLink}
+                to="/projects"
+              />
+              <Menu.Item
+                className="links"
+                name="issues"
+                as={NavLink}
+                to="/issues"
+              />
+              <Menu.Item
+                className="links"
+                name="members"
+                as={NavLink}
+                to="/members"
+              />
+              <Menu.Menu position="right">
+                {/* <Menu.Item className="links" name="logout" /> */}
+                {this.props.user.profile && (
+                  <Popup
+                    content={
+                      <div
+                        onClick={this.handleLogout}
+                        style={{ cursor: "pointer", padding: "0.8rem" }}
+                      >
+                        <Icon name="log out" color="red" />
+                        Logout
+                      </div>
+                    }
+                    basic
+                    on="click"
+                    trigger={
+                      <div style={{ cursor: "pointer", padding: "0.4rem" }}>
+                        <Avatar
+                          name={this.props.user.profile.full_name}
+                          round={true}
+                          size="45"
+                        />
+                      </div>
+                    }
+                  />
+                )}
+              </Menu.Menu>
+              <div ref={this.contextRef}></div>
+            </Fragment>
+          )}
         </Menu>
-      </div>
+      </Sticky>
     );
   }
 }
