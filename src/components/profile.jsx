@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Grid, Image, Segment, Header, Button, Icon } from "semantic-ui-react";
 import { isCurrentUser } from "../utils/helperFunctions";
-import profilepic from "../sample pics/profile.jpeg";
 import { Link } from "react-router-dom";
 import MyModal from "./mymodal";
 import http from "../services/httpservice";

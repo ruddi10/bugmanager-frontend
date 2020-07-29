@@ -20,9 +20,8 @@ export function getTotalPages(max, count) {
 // export function isNew(date){
 
 // }
-const Search_Pattern = 'src="/images/uploads/';
-const Site_Domain = "http://127.0.0.1:8000";
-const Replace_With = `src=\"${Site_Domain}/images/uploads/`;
+const Search_Pattern = "<img";
+const Replace_With = `<img style="max-height:500px" `;
 export function RichTextImagePath(text) {
   return text.replace(Search_Pattern, Replace_With);
 }

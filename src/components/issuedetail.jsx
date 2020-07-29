@@ -18,6 +18,7 @@ import MyBreadcrumb from "./common/mybreadcrumb";
 import MyModal from "./mymodal";
 import { toast } from "react-toastify";
 import parse from "html-react-parser";
+import { RichTextImagePath } from "../utils/helperFunctions";
 class IssueDetail extends Component {
   state = {
     loading: true,
@@ -531,7 +532,7 @@ class IssueDetail extends Component {
                     // }}
                     >
                       {issue.description
-                        ? parse(issue.description)
+                        ? parse(RichTextImagePath(issue.description))
                         : "Not Available"}
                     </div>
                   </Grid.Column>
